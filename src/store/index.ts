@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     cities: ["Zurich", "Rotterdam"],
     citiesWeather: [],
+    loadingSelect: false,
   },
   mutations: {
     addNewCity(state, data) {
@@ -20,6 +21,9 @@ export default new Vuex.Store({
     },
     removeCityWeather(state, data) {
       state.citiesWeather = state.citiesWeather.filter((city) => city.id !== data.id);
+    },
+    onChangeLoading(state, data) {
+      state.loadingSelect = data;
     },
   },
   actions: {
@@ -36,9 +40,14 @@ export default new Vuex.Store({
     removeCityWeather({ commit }, data) {
       commit("removeCityWeather", data);
     },
+
+    onChangeLoading({ commit }, data) {
+      commit("onChangeLoading", data);
+    },
   },
   getters: {
     getCities: (state) => state.cities,
     getCitiesWeather: (state) => state.citiesWeather,
+    getLoading: (state) => state.loadingSelect,
   },
 });

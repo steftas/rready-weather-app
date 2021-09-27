@@ -1,4 +1,4 @@
-const PackResponseData = (data) => {
+const PackResponseData = (data: any): Record<string, unknown> => {
   const obj = {
     ...data,
     displayField: {

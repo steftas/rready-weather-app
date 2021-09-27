@@ -1,6 +1,9 @@
 <template>
   <v-container>
-    <div v-if="layout.length === 0">NO API OR NO CITY</div>
+    <div v-if="layout.length === 0 && !loading">
+      <v-alert :value="true" color="default" class="text-center"> Sorry, nothing to display here :( </v-alert>
+    </div>
+
     <grid-layout
       :layout.sync="layout"
       :col-num="12"
@@ -14,6 +17,17 @@
     >
       <grid-item v-for="item in layout" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" :key="item.i">
         <City :cityData="item.data" />
+      </grid-item>
+
+      <grid-item
+        v-if="loadingSelect"
+        :x="(layout.length % 3) * 4"
+        :y="Math.floor(layout.length / 3) * 6"
+        :w="4"
+        :h="6"
+        :i="100000"
+      >
+        <v-skeleton-loader v-bind="attrs" type="article, actions" height="416"></v-skeleton-loader>
       </grid-item>
     </grid-layout>
   </v-container>
@@ -32,13 +46,25 @@ export default Vue.extend({
     GridItem: VueGridLayout.GridItem,
     City,
   },
+  props: {
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
   data: () => ({
+    attrs: {
+      class: "mb-6",
+      boilerplate: true,
+      elevation: 2,
+    },
     layout: [],
   }),
   computed: {
     ...mapGetters({
       citiesWeather: "getCitiesWeather",
+      loadingSelect: "getLoading",
     }),
   },
   watch: {

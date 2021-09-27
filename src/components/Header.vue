@@ -18,7 +18,7 @@
     <v-autocomplete
       v-model="select"
       @change="onAddNewCity"
-      :loading="loading"
+      :loading="loading && 'secondary'"
       :items="items"
       :search-input.sync="search"
       class="mx-4"
@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import PackResponseData from "@/utility/packResponseData";
+import packResponseData from "@/utility/packResponseData";
 import Vue from "vue";
 import http from "../api/axios";
 
@@ -45,14 +45,11 @@ export default Vue.extend({
     loading: false,
     items: [],
     search: null,
-    select: null,
+    select: "",
   }),
 
   watch: {
     search(val) {
-      // Items have already been requested
-      if (this.loading) return;
-
       if (!val) return;
 
       this.getCitiesList(val);
@@ -62,26 +59,26 @@ export default Vue.extend({
   methods: {
     onAddNewCity() {
       this.onGetWeather(this.select);
+      this.select = "";
+      this.items = [];
     },
-    onGetWeather(city) {
-      this.loading = true;
+    onGetWeather(city: string) {
+      this.$store.dispatch("onChangeLoading", true);
       http
         .get(
           `api.openweathermap.org/data/2.5/weather?q=${city}&mode=json&units=metric&appid=f4c563633255c1fc7c79cc5f8a559729`
         )
         .then((response) => {
-          this.$store.dispatch("addCityWeather", PackResponseData(response.data));
+          this.$store.dispatch("addCityWeather", packResponseData(response.data));
           this.$store.dispatch("addNewCity", city);
-          this.select = null;
-          this.items = [];
-          this.loading = false;
+
+          this.$store.dispatch("onChangeLoading", false);
         })
-        .catch((err) => {
-          console.log(err);
-          this.loading = false;
+        .catch(() => {
+          this.$store.dispatch("onChangeLoading", false);
         });
     },
-    getCitiesList(value) {
+    getCitiesList(value: string) {
       this.items = [];
       this.loading = true;
 
@@ -91,8 +88,7 @@ export default Vue.extend({
           this.items = res.data;
           this.loading = false;
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
           this.loading = false;
         });
     },

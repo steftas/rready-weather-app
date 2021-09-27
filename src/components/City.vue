@@ -18,13 +18,22 @@
             <v-list-item-title>Select field to display</v-list-item-title>
           </v-list-item>
           <v-list-item>
-            <v-checkbox v-model="cityData.displayField.min_max" label="Min/Max Temperature"></v-checkbox>
+            <v-checkbox
+              v-model="cityData.displayField.min_max"
+              label="Min/Max Temperature"
+            ></v-checkbox>
           </v-list-item>
           <v-list-item>
-            <v-checkbox v-model="cityData.displayField.rise_set" label="Sunrise/Sunset Time"></v-checkbox>
+            <v-checkbox
+              v-model="cityData.displayField.rise_set"
+              label="Sunrise/Sunset Time"
+            ></v-checkbox>
           </v-list-item>
           <v-list-item>
-            <v-checkbox v-model="cityData.displayField.wind" label="Wind"></v-checkbox>
+            <v-checkbox
+              v-model="cityData.displayField.wind"
+              label="Wind"
+            ></v-checkbox>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -34,7 +43,9 @@
       <v-row>
         <v-col cols="12">
           <div class="degree_div">
-            <h2 class="text-h2 degree">{{ cityData.main.temp.toFixed(0) }}&deg;C</h2>
+            <h2 class="text-h2 degree">
+              {{ cityData.main.temp.toFixed(0) }}&deg;C
+            </h2>
           </div>
         </v-col>
 
@@ -54,17 +65,23 @@
                     contain
                   ></v-img>
                 </template>
-                <span class="text-uppercase">{{ cityData.weather[0].description }}</span>
+                <span class="text-uppercase">{{
+                  cityData.weather[0].description
+                }}</span>
               </v-tooltip></v-list-item-subtitle
             >
-            <v-list-item-title>{{ cityData.weather[0].main }}</v-list-item-title>
+            <v-list-item-title>{{
+              cityData.weather[0].main
+            }}</v-list-item-title>
           </v-list-item>
 
           <v-list-item v-if="cityData.displayField.min_max">
             <v-list-item-subtitle>
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
-                  <v-icon v-bind="attrs" v-on="on">mdi-thermometer-lines</v-icon>
+                  <v-icon v-bind="attrs" v-on="on"
+                    >mdi-thermometer-lines</v-icon
+                  >
                 </template>
                 <span class="text-uppercase">Max/Min Temperature</span>
               </v-tooltip></v-list-item-subtitle
@@ -86,7 +103,9 @@
             >
             <v-list-item-title
               >{{ cityData.sys.sunrise | timesStampToDate("HH:mm") }} /
-              {{ cityData.sys.sunset | timesStampToDate("HH:mm") }}</v-list-item-title
+              {{
+                cityData.sys.sunset | timesStampToDate("HH:mm")
+              }}</v-list-item-title
             >
           </v-list-item>
 
@@ -120,7 +139,9 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="gray darken-1" text @click="dialog = false"> Close </v-btn>
+            <v-btn color="gray darken-1" text @click="dialog = false">
+              Close
+            </v-btn>
             <v-btn color="red darken-1" text @click="onRemoveCity"> Yes </v-btn>
           </v-card-actions>
         </v-card>

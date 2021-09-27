@@ -1,7 +1,19 @@
 <template>
   <div>
-    <Gridstack v-if="!loading" />
-    <div v-if="loading">Loading</div>
+    <v-container v-if="loading">
+      <v-row
+        ><v-col cols="4">
+          <v-skeleton-loader v-bind="attrs" type="article, actions" height="416"></v-skeleton-loader>
+        </v-col>
+        <v-col cols="4">
+          <v-skeleton-loader v-bind="attrs" type="article, actions" height="416"></v-skeleton-loader>
+        </v-col>
+        <v-col cols="4">
+          <v-skeleton-loader v-bind="attrs" type="article, actions" height="416"></v-skeleton-loader> </v-col
+      ></v-row>
+    </v-container>
+
+    <Gridstack :loading="loading" />
   </div>
 </template>
 
@@ -20,6 +32,11 @@ export default Vue.extend({
   },
 
   data: () => ({
+    attrs: {
+      class: "mb-6",
+      boilerplate: true,
+      elevation: 2,
+    },
     loading: true,
   }),
 
@@ -39,15 +56,14 @@ export default Vue.extend({
           this.$store.dispatch("addCityWeather", packResponseData(response.data));
           this.loading = false;
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
           this.loading = false;
         });
     },
   },
   mounted() {
     if (this.cities) {
-      this.cities.forEach((city) => {
+      this.cities.forEach((city: unknown) => {
         this.onGetWeather(city);
       });
     }
